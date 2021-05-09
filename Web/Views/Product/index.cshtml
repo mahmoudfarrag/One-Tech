@@ -1,0 +1,108 @@
+@model List<BL.ViewModels.ProductViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_DashoardLayout.cshtml";
+}
+@{
+    Html.RenderPartial("_DeleteConfirmationDialog");
+}
+
+<a href="/Product/AddProduct" class="btn btn-primary mt-3 mb-3">Add New Product</a>
+<table id="ProductsTable" class="table table-hover table-striped" style="border-collapse:collapse; font-size:20px;font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+    <thead>
+        <tr>
+            <td>Product Name</td>
+            <td>Color</td>
+            <td>Image</td>
+            <td>Price</td>
+            <td>Quantity</td>
+            <td>Modification</td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.Name</td>
+
+
+                <td>@product.Color</td>
+                <td><img src="~/Content/images/@product.image" width="80" height="80"></td>
+                <td>@product.Price$</td>
+                <td id="quantity-@product.ID">@product.Quantity</td>
+                <!--<td>  @Html.ActionLink("Delete", "DeleteProduct", null, new { @class = "btn btn-success" })</td>-->
+                @*<td>  @Html.ActionLink("UpDate", "UpdateProduct", "Product", null, new { id = product.ID })</td>*@
+                <td>
+                    <a href="/Product/UpdateProduct/@product.ID" class="btn btn-success">Update </a>
+                    <button class="btn btn-danger deleteBtn" data-proID="@product.ID" data->Delete</button>
+                </td>
+
+            </tr>
+
+        }
+    </tbody>
+
+</table>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+
+            $('#ProductsTable').DataTable({ "lengthMenu": [ 3,5,10, 25, 50, 75, 100]});
+
+            $(document).on('click', '.deleteBtn', function () {
+                  $("#addtobagmodal .okBtn").data("product", $(this).attr("data-proID"));
+                  $("#addtobagmodal").modal("show");
+
+              })
+              $("#addtobagmodal").on("click", ".okBtn", function () {
+                  // alert("ok")
+
+                  var id = $(this).data("product");
+
+              $.ajax({
+                url: '@Url.Action("DeleteProduct")',
+                type: 'Get',
+                datatype: 'html',
+                data: { id: id },
+                  success: function (resoinse) {
+                      $("#addtobagmodal").modal("hide");
+                      location.reload(true);
+                }
+
+            });
+
+            });
+
+
+
+          });
+    </script>
+    <script src="~/Scripts/jquery.signalR-2.4.1.js"></script>
+    <script src="~/signalr/js"></script>
+    <script>
+        var proxy = $.connection.ProductHub;
+        $.connection.hub.start().done(
+            function () {
+
+                console.log("Started");
+
+            });
+        proxy.client.NotifyAdminAfterCheckout = function (productsQuantitiesList) {
+            //console.log(productsQuantitiesList);
+          
+            for (var item of productsQuantitiesList) {
+                var productQuantity = $("#quantity-" + item.ProductID);
+                var newQuantity = parseInt(productQuantity.html()) - item.Quantity
+                productQuantity.html(newQuantity);
+
+            }
+       
+        }
+    </script>
+
+}
+
+

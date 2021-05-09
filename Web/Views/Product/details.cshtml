@@ -1,0 +1,219 @@
+﻿@model BL.ViewModels.ProductViewModel
+@{
+    ViewBag.Title = "details";
+    var description = ""; int rating = 0;
+    if (ViewBag.productReview != null)
+    {
+        description = ViewBag.productReview.Description;
+        rating = ViewBag.productReview.rating;
+    }
+}
+ 
+<div class="row">
+    <div class="col-5 offset-1">
+        <img src="~/Content/images/@Model.image" id="image" class="w-100" style="height:580px" />
+    </div>
+
+    <div class="col-5 offset-1 mt-5">
+        <h2 id="Name">@Model.Name</h2>
+        <p style="width:300px" id="Description">@Model.Description</p>
+        <label>Color:&nbsp&nbsp </label><label id="Color" style="color:@Model.Color">@Model.Color</label><br><br>
+        <label>Price:&nbsp&nbsp <label id="Price"> @Model.Price$</label></label><br>
+
+
+
+
+
+
+        <a data-proID="@Model.ID" id="addTocartBtn" class="btn btn-success text-light">Add to Cart</a>
+        <a data-proID="@Model.ID" id="addToWishlistBtn" class="btn btn-success text-light">Add to WishList</a>
+        <div class="pt-4">
+            <img class="imageRating" data-status="0" src="~/Content/images/empty_star.png" onmousemove="rating(this)"
+                 onmouseout="removeRating(this)" onclick="stickRating(this)">
+            <img class="imageRating" data-status="0" src="~/Content/images/empty_star.png" onmousemove="rating(this)"
+                 onmouseout="removeRating (this)" onclick="stickRating(this)">
+            <img class="imageRating" data-status="0" src="~/Content/images/empty_star.png" onmousemove="rating(this)"
+                 onmouseout="removeRating (this)" onclick="stickRating(this)">
+            <img class="imageRating" data-status="0" src="~/Content/images/empty_star.png" onmousemove="rating(this)"
+                 onmouseout="removeRating(this)" onclick="stickRating(this)">
+            <img class="imageRating" data-status="0" src="~/Content/images/empty_star.png" onmousemove="rating(this)"
+                 onmouseout="removeRating(this)" onclick="stickRating(this)">
+        </div>
+        <div class="ratingForm row mt-2">
+            <textarea class="form-control col-8" id="ratingDescription"></textarea>
+            <span class="col-4"></span>
+            <button class="col-2 mt-2 btn btn-primary" id="ratingBtn">Add Rating</button>
+
+        </div>
+    </div>
+
+</div>
+<input type="hidden" id="productDescriptionInput" value="@description" />
+<input type="hidden" id="productRatingInput" value="@rating" />
+@section scripts{
+
+    <script>
+
+
+        var isClicked = false;
+        function rating(thisItem) {
+            var items = document.getElementsByClassName("imageRating");
+            if (items[0].getAttribute("data-status") != "1") {
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i] == thisItem) {
+                        items[i].setAttribute("src", "/Content/images/Filled_star.png");
+                        break;
+                    }
+                    items[i].setAttribute("src", "/Content/images/Filled_star.png");
+                }
+            }
+        }
+        function removeRating(thisItem) {
+            var items = document.getElementsByClassName("imageRating");
+            if (items[0].getAttribute("data-status") != "1") {
+                for (var i = 0; i < items.length; i++) {
+
+                    items[i].setAttribute("src", "/Content/images/empty_star.png");
+                }
+            }
+        }
+        function stickRating(thisItem) {
+            var items = document.getElementsByClassName("imageRating");
+            for (var i = 0; i < items.length; i++) {
+                if (items[i] == thisItem) {
+                    if (items[i].getAttribute("data-status") == "0") {
+                        items[i].setAttribute("data-status", "1");
+                    }
+                    else {
+                        items[i].setAttribute("data-status", "0");
+                    }
+                    break;
+                }
+                if (items[i].getAttribute("data-status") == "0") {
+                    items[i].setAttribute("data-status", "1");
+                }
+                else {
+                    items[i].setAttribute("data-status", "0");
+                }
+            }
+        }
+        /////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+    </script>
+    <script>
+          $(document).ready(function () {
+
+              var description=$("#productDescriptionInput").val();
+              var ratingNumber = $("#productRatingInput").val();
+
+              //display product rating
+            var images = $(".imageRating")
+            for (var i = 0; i < ratingNumber; i++) {
+                $(images[i]).attr("src", "/Content/images/Filled_star.png");
+            }
+                $("#ratingDescription").val(description);
+
+
+
+
+              $("#ratingBtn").click(function () {
+
+                var descriptionText = $("#ratingDescription").val();
+                var rating = 0;
+                var prodID=  @Model.ID;
+                var images = $(".imageRating")
+                  for (var img of images) {
+                     if ($(img).attr("src") == "/Content/images/Filled_star.png")
+                          rating++;
+                    }
+
+
+                  if (rating == 0 || descriptionText.length < 10) {
+                      alert("Enter valid rating by select stars or description should be more than 10 characters");
+                      return
+                  }
+
+              $.ajax({
+                url: '@Url.Action("addRating","Review")',
+                type: 'POST',
+                  datatype: 'html',
+                  data: { prodID: prodID, description: descriptionText, rating: rating },
+                  success: function (resoinse) {
+                        alert("thanks for rating this product")
+                }
+
+                });
+
+              })
+
+          });
+    </script>
+    <script>
+    $(document).ready(function () {
+           $(document).on('click', '#addTocartBtn', function () {
+                           var proID = $(this).attr("data-proID");
+                        $.ajax({
+                        url: '@Url.Action("AddProductToCart", "Cart")',
+                        type: 'POST',
+
+                        data: { id: proID},
+                        success: function (resoinse) {
+                        alert("Product Added To Cart");
+                        }
+
+                });
+
+                })
+
+
+
+    $(document).on('click', '#addToWishlistBtn', function () {
+                    var proID = $(this).attr("data-proID");
+                    $.ajax({
+                    url: '@Url.Action("AddProductToWishList", "WishList")',
+                    type: 'POST',
+
+                    data: { id: proID},
+                    success: function (resoinse) {
+                    alert("Product Added To WishList");
+                }
+
+                });
+
+                })
+
+
+
+
+        });
+    </script>
+
+    <script src="~/Scripts/jquery.signalR-2.4.1.js"></script>
+    <script src="~/signalr/js"></script>
+    <script>
+        var proxy = $.connection.ProductHub;
+        $.connection.hub.start().done(
+            function () {
+
+                console.log("Started");
+
+            });
+        proxy.client.NotifyUpdateProduct = function (productViewModel) {
+            if (@Model.ID == productViewModel.ID) {
+                $("#image").attr("src", "/Content/images/" + productViewModel.image);
+                $("#Name").html(productViewModel.Name);
+                $("#Price").html(productViewModel.Price + "$");
+                $("#Description").html(productViewModel.Description);
+                $("#Color").html(productViewModel.Color)
+            }
+        }
+    </script>
+}
+
+

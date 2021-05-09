@@ -1,0 +1,82 @@
+﻿@model IEnumerable<BL.ViewModels.CategoryViewModel>
+
+@{ ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_DashoardLayout.cshtml"; }
+
+<h2 class="text-center" style="margin-top:60px;">Categories</h2>
+
+@{ Html.RenderPartial("_DeleteConfirmationDialog"); }
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary m-auto" })
+</p>
+
+
+
+
+
+<div class="table-responsive ">
+    <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+            <tr>
+              <th>Name</th>
+            <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>@item.Name</td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }, new { @class = "btn btn-primary" })
+                    <button class="btn btn-danger deleteBtn" data-catID="@item.ID" data->Delete</button>
+                </td>
+            </tr>
+            }
+
+        </tbody>
+        
+    </table>
+</div>
+
+@section scripts{
+
+    <script>
+        $(document).ready(function () {
+
+            $("#dataTable").DataTable({
+                "lengthMenu": [3,5,10, 25, 50, 75, 100]
+            });
+
+            $(document).on('click', '.deleteBtn', function () {
+                  $("#addtobagmodal .okBtn").data("cat", $(this).attr("data-catID"));
+                  $("#addtobagmodal").modal("show");
+
+              })
+
+              $("#addtobagmodal").on("click", ".okBtn", function () {
+                  // alert("ok")
+
+                  var id = $(this).data("cat");
+
+              $.ajax({
+                url: '@Url.Action("Delete")',
+                type: 'Get',
+                datatype: 'html',
+                data: { catID: id },
+                  success: function (resoinse) {
+                      $("#addtobagmodal").modal("hide");
+                      location.reload(true);
+                }
+
+            });
+
+            });
+
+
+
+          });
+    </script>
+
+}

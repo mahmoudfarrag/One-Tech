@@ -1,0 +1,79 @@
+﻿@model IEnumerable<BL.ViewModels.OrderProductViewModel>
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_DashoardLayout.cshtml";
+}
+
+@if(Model.FirstOrDefault() != null)
+{
+<h2>Order Number:@Model.FirstOrDefault().orderID</h2>
+}
+else
+{
+    <h2>this Order Products May be deleted !!</h2>
+}
+
+
+
+<table class="table table-striped" id="dataTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.productTotal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.productDiscount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductNetPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.productQuantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product.Name)
+            </th>
+
+
+        </tr>
+    </thead>
+  
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.productTotal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.productDiscount)<span>%</span>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductNetPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.productQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Product.Name)
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+
+
+</table>
+@section scripts{
+      <script>
+
+          $(document).ready(function () {
+
+              $("#dataTable").DataTable({
+                  "lengthMenu": [3, 5, 10, 25, 50, 75, 100]
+              });
+          });
+      </script>
+    }

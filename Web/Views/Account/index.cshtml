@@ -1,0 +1,86 @@
+﻿@model IEnumerable<BL.ViewModels.RegisterViewodel>
+
+@{
+    ViewBag.Title = "index";
+    Layout = "~/Views/Shared/_DashoardLayout.cshtml";
+
+}
+@{ Html.RenderPartial("_DeleteConfirmationDialog"); }
+<h2 class="text-center" style="margin-top:60px">Users</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Register", null, new { @class = "btn btn-primary" })
+</p>
+<table class="table" id="usersTable">
+    <thead>
+        <tr>
+            <th>
+
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
+                    <button class="btn btn-danger deleteBtn" data-userID="@item.Id" data->Delete</button>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+
+
+@section scripts{
+
+    <script>
+        $("#usersTable").DataTable({ "lengthMenu": [3, 5, 10, 25, 50, 75, 100] });
+
+              $(".deleteBtn").click(function () {
+                  $("#addtobagmodal .okBtn").data("user", $(this).attr("data-userID"));
+                  $("#addtobagmodal").modal("show");
+
+              })
+              $("#addtobagmodal").on("click", ".okBtn", function () {
+                  // alert("ok")
+
+                  var id = $(this).data("user");
+
+              $.ajax({
+                url: '@Url.Action("Delete")',
+                type: 'Get',
+                datatype: 'html',
+                data: { id: id },
+                  success: function (resoinse) {
+                      $("#addtobagmodal").modal("hide");
+                      location.reload(true);
+                }
+
+            });
+
+            });
+
+    </script>
+}
+

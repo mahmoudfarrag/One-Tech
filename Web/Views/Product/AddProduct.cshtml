@@ -1,0 +1,253 @@
+﻿@model BL.ViewModels.ProductViewModel
+@{
+    ViewBag.Title = "AddProduct";
+    SelectList catList = new SelectList(ViewBag.categories, "ID", "Name");
+    Layout = "~/Views/Shared/_DashoardLayout.cshtml";
+
+}
+<div class="container" style="box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;">
+    <div class="mytitle" >
+        <h2 >Add Product</h2>
+    </div>
+    <div class="row" >
+        @using (Html.BeginForm("AddProduct", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+
+            @Html.AntiForgeryToken()
+
+            
+            <div class="row pt-5">
+                @*<span class="fname">Product Name <span class="required">*</span></span>*@
+                <div  class="col-2 mt-3 offset-1">Product Name</div>
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control col-8" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger col-8 offset-3" })
+            </div>
+
+
+
+            <div class="row pt-2">
+                <div class="col-2 mt-3 offset-1">Product Price</div>
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control col-8" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger col-8 offset-3" })
+            </div>
+
+            <div class="row pt-2">
+                <div class="col-2 mt-3 offset-1">Product Image</div>
+                @Html.EditorFor(model => model.image, new { htmlAttributes = new { @Type = "file", @class = "productImg form-control col-8" } })
+
+                @Html.ValidationMessageFor(model => model.image, "", new { @class = "text-danger col-8 offset-3" })
+            </div>
+
+            <div class="row pt-2">
+                <div class="col-2 mt-3 offset-1">Color</div>
+                @Html.EditorFor(model => model.Color, new { htmlAttributes = new { @class = "form-control col-8" } })
+
+                @Html.ValidationMessageFor(model => model.Color, "", new { @class = "text-danger col-8 offset-3" })
+            </div>
+
+            <div class="row pt-2">
+                <div class="col-2 mt-3 offset-1"> Description</div>
+                @Html.TextAreaFor(model => model.Description, new { @class = "productDescription col-8" })
+
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger col-8 offset-3" })
+            </div>
+            <div class="row pt-2">
+                <div class="col-2 mt-3 offset-1"> Discount</div>
+
+                @Html.EditorFor(model => model.Discount, new { htmlAttributes = new { @class = "form-control col-8" } })
+
+                @Html.ValidationMessageFor(model => model.Discount, "", new { @class = "text-danger col-8 offset-3" })
+            </div>
+
+            <div class="row pt-2">
+                <div class="col-2 mt-3 offset-1">Quantity</div>
+                @Html.EditorFor(model => model.Quantity, new { htmlAttributes = new { @class = "form-control col-8" } })
+
+                @Html.ValidationMessageFor(model => model.Quantity, "", new { @class = "text-danger col-8 offset-3" })
+            </div>
+            <div class="row pt-2">
+                <div class="col-2 mt-3 offset-1">Category</div>
+                @Html.DropDownListFor(c => c.CategoryId, catList, htmlAttributes: new { @class = " col-8" })
+          
+                @Html.ValidationMessageFor(c => c.CategoryId, null)
+            </div>
+
+            <button class="AddBtn" type="submit">Add </button>
+        }
+    </div>
+</div>
+
+@section Styles
+{
+    <style type="text/css">
+        import url('https://fonts.googleapis.com/css?family=Roboto+Condensed:400,700');
+
+        body {
+            background: url('http://all4desktop.com/data_images/original/4236532-background-images.jpg');
+            font-family: 'Roboto Condensed', sans-serif;
+            color: #262626;
+            margin: 5% 0;
+        }
+        .productDescription {
+            height:150px
+        }
+        .productImg{
+            border:none !important;
+        }
+        .removeBorder:focus {
+            border: none !important;
+        }
+        /* .container {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+        }*/
+        media (min-width: 1200px) {
+            .container
+
+        {
+            max-width: 1140px;
+        }
+
+        }
+
+        .d-flex {
+            display: flex;
+            flex-direction: row;
+            background: #f6f6f6;
+            border-radius: 0 0 5px 5px;
+            padding: 25px;
+        }
+
+        form {
+            flex: 4;
+        }
+
+        .Yorder {
+            flex: 2;
+        }
+
+        .mytitle {
+            background: -webkit-gradient(linear, left top, right bottom, color-stop(0, #5195A8), color-stop(100, #70EAFF));
+            background: -moz-linear-gradient(top left, #5195A8 0%, #70EAFF 100%);
+            background: -ms-linear-gradient(top left, #5195A8 0%, #70EAFF 100%);
+            background: -o-linear-gradient(top left, #5195A8 0%, #70EAFF 100%);
+            background: linear-gradient(to bottom right, #5195A8 0%, #70EAFF 100%);
+            border-radius: 5px 5px 0 0;
+            padding: 20px;
+            color: #f6f6f6;
+            margin-top:60px;
+        }
+
+       h2 {
+            margin: 0;
+            padding-left: 15px;
+            text-align:center;
+        }
+
+        .required {
+            color: red;
+        }
+
+        label, table {
+            display: block;
+            margin: 15px;
+        }
+
+            label > span {
+                float: left;
+                width: 25%;
+                margin-top: 12px;
+                padding-right: 10px;
+            }
+
+        input[type="text"], input[type="tel"], input[type="email"], input[type="number"], input[type="file"], select, textarea {
+            width: 75%;
+            height: 30px;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+            border: 1px solid #dadada;
+            color: #888;
+            height: 50px;
+            border-radius: 15px;
+        }
+
+        select {
+            width: 75%;
+            height: 50px;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+        }
+
+        .Yorder {
+            margin-top: 15px;
+            height: 600px;
+            padding: 20px;
+            border: 1px solid #dadada;
+        }
+
+        table {
+            margin: 0;
+            padding: 0;
+        }
+
+        th {
+            border-bottom: 1px solid #dadada;
+            padding: 10px 0;
+        }
+
+        tr > td:nth-child(1) {
+            text-align: left;
+            color: #2d2d2a;
+        }
+
+        tr > td:nth-child(2) {
+            text-align: right;
+            color: #52ad9c;
+        }
+
+        td {
+            border-bottom: 1px solid #dadada;
+            padding: 25px 25px 25px 0;
+        }
+
+        p {
+            display: block;
+            color: #888;
+            margin: 0;
+            padding-left: 25px;
+        }
+
+        .Yorder > div {
+            padding: 15px 0;
+        }
+
+        .AddBtn {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 30px;
+            background: #52ad9c;
+            color: #fff;
+            font-size: 15px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+            button:hover {
+                cursor: pointer;
+                background: #428a7d;
+            }
+    </style>
+
+
+
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

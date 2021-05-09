@@ -1,0 +1,18 @@
+[
+  {
+    "Name": "ELECTRONICS",
+    "expected": true
+  },
+  {
+    "Name": "Skin Care",
+    "expected": true
+  },
+  {
+    "Name": "Clothes",
+    "expected": true
+  },
+  {
+    "Name": "Categort6",
+    "expected": true
+  }
+]

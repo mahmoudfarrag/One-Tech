@@ -1,0 +1,132 @@
+﻿@model BL.ViewModels.PaymentViewModel
+
+@{
+    ViewBag.Title = "UpdatePayment";
+}
+<div class="container">
+    <hr>
+    <div class="row">
+        <aside class="col-sm-6">
+            <p style="font-size:xx-large">Update Payment</p>
+
+            <article class="card" style="width:1200px;">
+                <div class="card-body p-5">
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <label for="username" style="font-size:x-large">Full name (on the card)</label>
+
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-user"></i></span>
+                                </div>
+                                @Html.EditorFor(model => model.cardOwnerName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.cardOwnerName, null, new { @class = "text-danger" })
+
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cardNumber" style="font-size:x-large">Card number</label>
+
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fa fa-credit-card"></i></span>
+                                </div>
+                                @Html.EditorFor(model => model.CardNumber, new
+                                {
+                                    htmlAttributes = new { @class = "form-control" }
+                          })
+                                @Html.ValidationMessageFor(model => model.CardNumber, null, new { @class = "text-danger" })
+                                @*<input type="text" class="form-control" name="CardNumber" id="CardNumber" placeholder="" style="height: 40px;">*@
+                            </div> <!-- input-group.// -->
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cardNumber" style="font-size:x-large">Expiration Date</label>
+                            <div class="input-group">
+                                @Html.EditorFor(model => model.ExperationDate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.ExperationDate, null, new { @class = "text-danger" })
+                                <label for="cardNumber"  style="font-size:x-large">@Model.ExperationDate</label>
+
+
+                                @*<input type="date" class="form-control" name="ExperationDate" id="ExperationDate" placeholder="" style="height: 40px;">*@
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label data-toggle="tooltip" title="" data-original-title="3 digits code on back side of the card" style="font-size:x-large">CVV <i class="fa fa-question-circle"></i></label>
+
+                                    @Html.EditorFor(model => model.cvc, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.cvc, null, new { @class = "text-danger" })
+
+                                    @*<input class="form-control" required="" type="text" name="cvc" id="cvc" style="height: 40px;">*@
+                                </div>
+                            </div>
+                        </div>
+                        <input type="submit" value="Save" class="subscribe btn btn-primary btn-block"
+                               style="height: 50px;font-size: xx-large;" />
+
+                        @*</form>*@
+                    }
+                </div>
+            </article>
+
+
+        </aside>
+    </div>
+
+</div>
+
+<br>
+<br>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+@*@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div>
+        @Html.DisplayNameFor(c => c.ID)
+        @Html.DisplayFor(c => c.ID)
+    </div>
+    <div>
+        @Html.LabelFor(c => c.CardNumber)
+        @Html.EditorFor(c => c.CardNumber,
+                new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(c => c.CardNumber, null, new { @class = "text-danger" })
+
+    </div>
+    <div>
+        @Html.LabelFor(c => c.ExperationDate)
+        @Html.EditorFor(c => c.ExperationDate,
+                new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(c => c.ExperationDate, null, new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.LabelFor(c => c.cardOwnerName)
+        @Html.EditorFor(c => c.cardOwnerName,
+                new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(c => c.cardOwnerName, null, new { @class = "text-danger" })
+    </div>
+    <div>
+        @Html.LabelFor(c => c.cvc)
+        @Html.EditorFor(c => c.cvc,
+                new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(c => c.cvc, null, new { @class = "text-danger" })
+    </div>
+    <input type="submit" value="Save" class="btn btn-Success" />
+}*@
+
+
+

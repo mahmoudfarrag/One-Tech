@@ -1,0 +1,230 @@
+﻿@using PagedList.Mvc
+@using PagedList
+@model  PagedList<BL.ViewModels.ProductViewModel>
+
+
+
+@{
+    ViewBag.Title = "allProducts";
+}
+
+
+
+@*<div class="d-flex flex-wrap center" style="margin-left:100px">
+
+
+
+
+        @foreach (var item in Model)
+        {
+            <div class="card m-2" style="width:22%;">
+                <img class="card-img-top" src="~/Content/images/@item.image" alt="Card image cap" height="260px">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text" style="height:150px">@item.Description</p>
+                    <a href="/cart/AddProductToCart/@item.ID" class="btn btn-primary mt">Add To Cart</a>
+                    <a href="/wishlist/AddProductToWishList/@item.ID" class="btn btn-primary">View Details</a>
+                </div>
+            </div>
+        }
+    </div>*@
+
+@section styles{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css" />
+    <!--bootstrap file -->
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" />-->
+    <!--Main css Style file -->
+    <link rel="stylesheet" href="~/Content/styles/main2.css" />
+    <style>
+        a.catItem {
+            text-decoration: none;
+        }
+
+            a.catItem:active {
+                text-decoration: underline;
+            }
+
+        .pagination li {
+            margin-right: 6px;
+            background-color: #0e8ce4;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 25px;
+        }
+
+            .pagination li a {
+                color: white;
+            }
+    </style>
+}
+
+
+
+
+
+
+
+
+<!---------------------------------------------------->
+<!------------------ Start content  ------------------>
+<!---------------------------------------------------->
+<!--************* End section name *********************-->
+<!---------------- Start section content  ------------------>
+<div class="sec_content container-fluid">
+    <div class="row">
+        <!-------------------- side ------------------>
+        <div class="side col-md-2 pb-5" style="box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;background-color:whitesmoke">
+            <div class="categories">
+                <h5 class="text-capitalize border-bottom py-3 h3">categories <i class="open_opotions_01 float-right text-black fas fa-plus fa-xs  d-md-none"></i></h5>
+                <div class="options_01 text-capitalize d-none d-md-block">
+                    <ul class=" ml-3 h6">
+                        @foreach (var cat in ViewBag.cats)
+                        {
+                            <a style="color:black" href="/Product/getProducts/@cat.ID" data-page="page06" class="catItem"><li class="mt-2 "><i class="fas fa-arrow-right mr-1 mt-2 catItem"></i>@cat.Name</li></a>
+
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-------------------- products ------------------>
+        <div class=" products col-md-9">
+            <div class="row">
+                @foreach (var product in Model)
+                {
+                    int averageRating = 0;
+                    if (product.Reviews.Count() > 0)
+                    {
+                        averageRating = (int)Math.Ceiling((decimal)product.Reviews.Sum(pr => pr.rating) / product.Reviews.Count());
+                    }
+
+                    <div class="col-4 box mb-4">
+                        <a href="/product/details/@product.ID">
+                            <div class="image position-relative">
+                                <img class="w-100" src="~/Content/images/@product.image" alt="img1" style="height:300px" id="image-@product.ID">
+                                @*<img class="top w-100 position-absolute" src="images/clothes/products/01.jpg" alt="img1">*@
+                                <div class="quickview position-absolute w-100 main_color text-center"><a href="/product/details/@product.ID"><i class="fas fa-eye"></i>Quickview</a></div>
+                            </div>
+
+                            <div class="details">
+                                <div class="rating">
+                                    @for (int i = 0; i < averageRating; i++)
+                                    {
+                                        <span><i class="fas fa-star fa-xs text-warning"></i></span>
+                                    }
+                                    @for (int i = averageRating; i < 5; i++)
+                                    {
+                                        <span><i class="fas fa-star fa-xs text-secondary"></i></span>
+                                    }
+
+
+                                </div>
+                                <p class="name h4 my-0 text-secondary" id="Name-@product.ID">@product.Name</p>
+                                <p class="price h5 font-weight-bold text-danger" id="Price-@product.ID">$@product.Price</p>
+                            </div>
+                        </a>
+
+
+                        <div class="option text-secondary border-top py-2">
+                            <div class="add_chart float-left h5"><a data-proID="@product.ID" id="addTocartBtn"><i class="fas fa-shopping-bag"></i>&nbsp;Add to chart</a></div>
+                            <div class="fav float-right h5"><a data-proID="@product.ID" id="addToWishlistBtn"><i class="fas fa-heart fa-lg"></i></a></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div id="pager " class="offset-5">
+
+            @{
+                if (ViewBag.actionName == "search")
+                {
+                    @Html.PagedListPager(Model, page => Url.Action("search", new { ViewBag.productToSearch, page }));
+                }
+                else if (ViewBag.actionName == "allProducts")
+                {
+                    @Html.PagedListPager(Model, page => Url.Action("allProducts", new { page }));
+                }
+                else if (ViewBag.actionName == "getProducts")
+                {
+
+                    @Html.PagedListPager(Model, page => Url.Action("getProducts", new { ViewBag.categoryID, page }));
+                }
+            }
+            <p class="h4 text-center"> Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</p>
+
+
+        </div>
+    </div>
+
+</div>
+@section scripts{
+    <script>
+    $(document).ready(function () {
+           $(document).on('click', '#addTocartBtn', function () {
+                           var proID = $(this).attr("data-proID");
+                        $.ajax({
+                        url: '@Url.Action("AddProductToCart", "Cart")',
+                        type: 'POST',
+
+                        data: { id: proID},
+                        success: function (resoinse) {
+                        alert("Product Added To Cart");
+                        }
+
+                });
+
+                })
+
+
+
+    $(document).on('click', '#addToWishlistBtn', function () {
+                    var proID = $(this).attr("data-proID");
+                    $.ajax({
+                    url: '@Url.Action("AddProductToWishList", "WishList")',
+                    type: 'POST',
+
+                    data: { id: proID},
+                    success: function (resoinse) {
+                    alert("Product Added To WishList");
+                }
+
+                });
+
+                })
+
+
+
+
+        });
+    </script>
+
+
+     <!-- using signal r when admin update product it will refelct to customer -->
+    
+    <script src="~/Scripts/jquery.signalR-2.4.1.js"></script>
+    <script src="~/signalr/js"></script>
+    <script>
+        
+        var proxy = $.connection.ProductHub;
+        $.connection.hub.start().done(
+            function () {
+
+                console.log("Started");
+
+            });
+        proxy.client.NotifyUpdateProduct = function (productViewModel) {
+         
+            $("#image-"+productViewModel.ID).attr("src", "/Content/images/" + productViewModel.image);
+            $("#Name-"+productViewModel.ID).html(productViewModel.Name);
+            $("#Price-"+productViewModel.ID).html(productViewModel.Price + "$");
+           
+        }
+    </script>
+
+
+}
+
+
+

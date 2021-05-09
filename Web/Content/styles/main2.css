@@ -1,0 +1,116 @@
+/************************* StyleFord ******************************/
+* {
+    box-sizing: border-box;
+    -webkit-transition: all 0.4s ease;
+    -moz-transition: all 0.4s ease;
+    -o-transition: all 0.4s ease;
+    transition: all 0.4s ease;
+}
+
+
+
+
+
+
+/*--------------------------------------------------
+--------------- Start my library  ------------------
+----------------------------------------------------*/
+a {
+    color: #999;
+}
+
+    a:hover {
+        color: #b48619;
+    }
+
+    a:focus {
+        color: #b48619;
+    }
+
+.my_p {
+    color: #777;
+    font-size: 18px;
+}
+
+.my_h {
+    color: #b48619;
+}
+
+i {
+    cursor: pointer;
+}
+
+.new_arrivals .my_p,
+.sections .my_p,
+.testimonials p {
+    width: 60%;
+}
+
+.main_color {
+    color: #b48619;
+}
+
+.second_color {
+    color: #777;
+}
+
+
+
+/*--------------- side ------------*/
+
+
+/*-------------- porducts ----------*/
+.sec_content .products .box .top {
+    left: 0;
+    top: 0;
+}
+
+.sec_content .products .quickview {
+    background-color: rgb(0, 0, 0, 0.7);
+    bottom: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+    .sec_content .products .quickview:hover {
+        background-color: #b48619;
+        color: #000;
+    }
+
+.sec_content .products .option {
+    opacity: 0;
+}
+
+    .sec_content .products .option .add_chart {
+        cursor: pointer;
+    }
+
+        .sec_content .products .option .add_chart:hover {
+            color: #b48619;
+        }
+
+    .sec_content .products .option .fav {
+        cursor: pointer;
+    }
+
+        .sec_content .products .option .fav:hover {
+            color: #dc3545;
+        }
+
+.sec_content .products .box .top {
+    opacity: 0;
+}
+
+.sec_content .products .box .quickview {
+    opacity: 1;
+}
+
+.sec_content .products .box .option {
+    opacity: 1;
+}
+
+media (min-width: 768px) .col-md-4 {
+    -ms-flex: 0 0 33.333333%;
+    /* flex: 0 0 33.333333%; */
+    max-width: 25% !important;
+}

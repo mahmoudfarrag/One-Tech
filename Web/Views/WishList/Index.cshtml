@@ -1,0 +1,107 @@
+﻿@model IEnumerable<BL.ViewModels.ProductViewModel>
+@{
+    ViewBag.Title = "Index";
+}
+@section styles{
+   <style>
+      a.productDetails:hover{
+          text-decoration:none;
+          color:none;
+      }
+       a.productDetails h4{
+           color:black;
+       }
+    </style>
+}
+<h1 style="text-align:center" class="mb-5 border-bottom">Wishlist</h1>
+@{
+    Html.RenderPartial("_DeleteConfirmationDialog");
+}
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-4 mb-4">
+                <div class="card">
+
+                    <a class="productDetails" href="/product/details/@item.ID"><img class="card-img-top w-100" style="height:300px" src="~/Content/images/@item.image" alt="Card image cap"></a>
+                    <div class="card-body">
+                        <a href="/product/details/@item.ID" class="productDetails">
+                            <h4 class="card-title" style="height:30px;overflow:hidden">@item.Name</h4>
+                            <p class="card-text text-danger h3">$@item.Price</p>
+                        </a>
+
+                        <div class="row mt-2">
+                            <div class="col-6">
+          
+                                <a data-proID="@item.ID" id="addTocartBtn" class="btn btn-primary form-control text-light">Add to Cart</a>
+                            </div>
+                            <div class="col-6">
+                                <button class="btn btn-danger deleteBtn form-control" data-productID="@item.ID">Delete</button>
+                            </div>
+                         
+                         
+                        </div>
+                    
+
+                 
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+
+</div>
+@section scripts{
+    <script>
+          $(document).ready(function () {
+              $(".deleteBtn").click(function () {
+                  $("#addtobagmodal .okBtn").data("product", $(this).attr("data-productID"));
+                  $("#addtobagmodal").modal("show");
+
+              })
+              $("#addtobagmodal").on("click", ".okBtn", function () {
+                  // alert("ok")
+
+                  var id = $(this).data("product");
+
+              $.ajax({
+                url: '@Url.Action("DeleteFromWishList")',
+                type: 'Get',
+                datatype: 'html',
+                data: { producID: id },
+                  success: function (resoinse) {
+                      $("#addtobagmodal").modal("hide");
+                      location.reload(true);
+                }
+
+            });
+
+              });
+
+
+
+
+                $(document).on('click', '#addTocartBtn', function () {
+                           var proID = $(this).attr("data-proID");
+                        $.ajax({
+                        url: '@Url.Action("AddProductToCart", "Cart")',
+                        type: 'POST',
+
+                        data: { id: proID},
+                        success: function (resoinse) {
+                        alert("Product Added To Cart");
+                        }
+
+                });
+
+                })
+
+
+
+          });
+    </script>
+
+}
+

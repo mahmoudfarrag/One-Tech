@@ -1,0 +1,58 @@
+﻿@model IEnumerable<BL.ViewModels.OrderViewModel>
+
+@{ ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_DashoardLayout.cshtml"; }
+
+<h2 class="text-center" style="margin-top:60px">Orders</h2>
+
+
+
+<table class="table table-striped" id="orderTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.date)
+            </th>
+           
+            <th>
+                @Html.DisplayNameFor(model => model.totalPrice)
+            </th>
+            <th>
+                @Html.Label("User Name")
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.date)
+        </td>
+      
+        <td>
+            @Html.DisplayFor(modelItem => item.totalPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.appUser.UserName)
+        </td>
+
+        <td>
+
+            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-primary" })
+
+        </td>
+    </tr>}
+    </tbody>
+
+    </table>
+@section scripts{
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+  
+   
+    <script>
+        $("#orderTable").DataTable({ "lengthMenu": [3, 5, 10, 25, 50, 75, 100]});
+    </script>
+}

@@ -1,0 +1,472 @@
+﻿@model BL.ViewModels.CartAndPaymentInfoViewModel
+@{
+    ViewBag.Title = "Index";
+    double? totalSum = 0;
+    ViewBag.test = Model;
+}
+
+
+
+@section styles{
+    <link rel="stylesheet" type="text/css" href="~/Content/styles/cart_styles.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/styles/cart_responsive.css">
+    <style>
+        .card {
+            margin: auto;
+            width: 600px;
+            padding: 3rem 3.5rem;
+            box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+        }
+
+        .mt-100 {
+            margin-top: 100px
+        }
+
+        .mb-50 {
+            margin-bottom: 50px
+        }
+
+        media(max-width:767px) {
+            .card
+
+        {
+            width: 90%;
+            padding: 1.5rem
+        }
+
+        }
+
+        media(height:1366px) {
+            .card
+
+        {
+            width: 90%;
+            padding: 8vh
+        }
+
+        }
+
+        .card-title {
+            font-weight: 700;
+            font-size: 2.5em
+        }
+
+        .nav {
+            display: flex
+        }
+
+            .nav ul {
+                list-style-type: none;
+                display: flex;
+                padding-inline-start: unset;
+                margin-bottom: 6vh
+            }
+
+            .nav li {
+                padding: 1rem
+            }
+
+                .nav li a {
+                    color: black;
+                    text-decoration: none
+                }
+
+        .active {
+            border-bottom: 2px solid black;
+            font-weight: bold
+        }
+
+        input {
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #000;
+            width: 100%;
+            min-width: unset;
+            background-color: transparent;
+            border-color: transparent;
+            margin: 0
+        }
+
+        form a {
+            color: grey;
+            text-decoration: none;
+            font-size: 1.6rem !important;
+            font-weight: bold
+        }
+
+            form a:hover {
+                color: grey;
+                text-decoration: none
+            }
+
+        form .row {
+            margin: 0;
+            overflow: hidden
+        }
+
+        form .row-1 {
+            border: 1px solid rgba(0, 0, 0, 0.137);
+            padding: 0.5rem;
+            outline: none;
+            width: 100%;
+            min-width: unset;
+            border-radius: 5px;
+            background-color: rgba(221, 228, 236, 0.301);
+            border-color: rgba(221, 228, 236, 0.459);
+            margin: 2vh 0;
+            overflow: hidden
+        }
+
+        form .row-2 {
+            border: none;
+            outline: none;
+            background-color: transparent;
+            margin: 0;
+            padding: 0 0.8rem
+        }
+
+        form .row .row-2 {
+            border: none;
+            outline: none;
+            background-color: transparent;
+            margin: 0;
+            padding: 0 0.8rem
+        }
+
+        form .row .col-2,
+        .col-7,
+        .col-3 {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            padding: 0 1vh
+        }
+
+        form .row .col-2 {
+            padding-right: 0
+        }
+
+        #card-header {
+            font-weight: bold;
+            font-size:1.3rem;
+        }
+
+        #card-inner {
+            font-size: 1.3rem;
+            color: black;
+            font-weight: 600;
+        }
+
+        .three .col-7 {
+            padding-left: 0
+        }
+
+        .three {
+            overflow: hidden;
+            justify-content: space-between
+        }
+
+            .three .col-2 {
+                border: 1px solid rgba(0, 0, 0, 0.137);
+                padding: 0.5rem;
+                outline: none;
+                width: 100%;
+                min-width: unset;
+                border-radius: 5px;
+                background-color: rgba(221, 228, 236, 0.301);
+                border-color: rgba(221, 228, 236, 0.459);
+                margin: 2vh 0;
+                width: fit-content;
+                overflow: hidden
+            }
+
+                .three .col-2 input {
+                    font-size: 0.7rem;
+                    margin-left: 1vh
+                }
+
+        .btn {
+            width: 100%;
+            background-color: rgb(65, 202, 127) !important;
+            border-color: rgb(65, 202, 127) !important;
+            color: white;
+            justify-content: center;
+            padding: 2vh 0;
+            margin-top: 3vh;
+            font: 400 13.3333px Arial;
+            font-size: x-large !important;
+            padding: 0.8rem !important;
+            border-width: 2px;
+            color: white !important;
+        }
+
+            .btn:focus {
+                box-shadow: none;
+                outline: none;
+                box-shadow: none;
+                color: white;
+            }
+
+        input:focus::-webkit-input-placeholder {
+            color: transparent
+        }
+
+        input:focus:-moz-placeholder {
+            color: transparent
+        }
+
+        input:focus::-moz-placeholder {
+            color: transparent
+        }
+
+        input:focus:-ms-input-placeholder {
+            color: transparent
+        }
+
+        input {
+            font-size: 18px !important
+        }
+    </style>
+}
+
+@{
+    Html.RenderPartial("_DeleteConfirmationDialog");
+}
+
+<!-- Cart -->
+<div class="cart_section">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-7 ml-3 ">
+                <div class="cart_container">
+                    <div class="cart_title border-bottom text-center">Shopping Cart</div>
+
+                    @foreach (var product in Model.productViewModels)
+                    {
+                        totalSum += product.Price - (product.Price * (product.Discount / 100));
+
+                        <div class="cart_items">
+                            <ul class="cart_list">
+                                <li class="cart_item clearfix">
+                                    <div class="cart_item_image"><img src="~/images/@product.image" alt=""></div>
+                                    <div class="cart_item_info d-flex flex-md-row flex-column justify-content-between">
+                                        <div class="cart_item_name cart_info_col">
+                                            <div class="cart_item_title">Name</div>
+                                            <div class="cart_item_text">@product.Name</div>
+                                        </div>
+                                        <div class="cart_item_color cart_info_col">
+                                            <div class="cart_item_title">Color</div>
+                                            <div class="cart_item_text"><span style="background-color:#999999;"></span>@product.Color</div>
+                                        </div>
+                                        <div class="cart_item_quantity cart_info_col">
+                                            <div class="cart_item_title">Quantity</div>
+                                            @*<div class="cart_item_text">@product.Quantity</div>*@
+                                            <div class="cart_item_text">
+                                                <select class="selectedQuantity" style="width:100%">
+                                                    @for (var i = 1; i <= product.Quantity; i++)
+                                                    {
+                                                        <option value="@i">@i</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="cart_item_price cart_info_col">
+                                            <div class="cart_item_title">Price</div>
+                                            <div class="cart_item_text">@product.Price</div>
+                                            <span class="itemDiscount d-none"> @product.Discount</span>
+
+                                        </div>
+                                        <div class="cart_item_total cart_info_col">
+                                            <div class="cart_item_title">Total</div>
+                                            <div class="cart_item_text" style="text-decoration:solid line-through Red 4px;"> @product.Price</div>
+                                        </div>
+                                        <div class="cart_item_total cart_info_col netPrice">
+                                            <div class="cart_item_title">Net Price</div>
+                                            @{
+                                                double netPrice = product.Price - (product.Price * (product.Discount / 100));
+                                            }
+                                            <div class="cart_item_text"> @netPrice</div>
+
+                                        </div>
+                                        <div>
+                                            <a data-ProductID="@product.ID" class="btn btn-danger rounded-circle DeleteFromCart " style="font-size:14px !important;">x</a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+
+
+                    <!-- Order Total -->
+                    <div class="order_total">
+                        <div class="order_total_content text-md-right">
+                            <div class="order_total_title">Order Total:</div>
+                            <div class="order_total_amount">@totalSum</div>
+                        </div>
+                    </div>
+
+                    <div class="cart_buttons">
+                        @if (Model.productViewModels.Count != 0)
+                        {
+                            <button type="button" class="button cart_button_checkout">Check Out</button>
+                        }
+                        else
+                        {
+                            <button type="button" class="button cart_button_checkout" disabled>Check Out </button>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+            <!--start card info -->
+            <div class="col-4 d-none paymentInfoForm">
+                <div class="card mt-100">
+                    <div class="card-title mx-auto"> Payment Information </div>
+
+                    @using (Html.BeginForm("Create", "Payment", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <span id="card-header">Saved cards:</span>
+
+                        <div class="row row-1">
+                            @foreach (var item in Model.paymentViewModels)
+                            {
+
+                                <div class="col-2"><img class="img-fluid" src="https://img.icons8.com/color/48/000000/visa.png" /></div>
+                                <div class="col-7">@item.CardNumber</div>
+                                <div class="col-3 d-flex justify-content-center"> <a href="#">Remove</a><input  checked type="radio" name="selectPayment" /> </div>
+                            }
+
+                            <button class="btn d-flex mx-auto" id="confirm"><b>Confirm</b></button>
+
+                        </div>
+
+
+                        <span id="card-header">Add new card:</span>
+                        <div class="row-1">
+                            <div class="row row-2"> <span id="card-inner">Card holder name</span> </div>
+
+                            <div class="row row-2"> @Html.EditorFor(model => model.paymentViewModel.cardOwnerName) </div>
+                            @Html.ValidationMessageFor(model => model.paymentViewModel.cardOwnerName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="row-1">
+                            <div class="row row-2"> <span id="card-inner">Card number</span> </div>
+                            <div class="row row-2">  @Html.EditorFor(model => model.paymentViewModel.CardNumber) </div>
+                            @Html.ValidationMessageFor(model => model.paymentViewModel.CardNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="row-1">
+                            <div class="row row-2"> <span id="card-inner">Expiretion Date</span> </div>
+                            <div class="row row-2">  @Html.EditorFor(model => model.paymentViewModel.ExperationDate)  </div>
+                            @Html.ValidationMessageFor(model => model.paymentViewModel.ExperationDate, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="row-1">
+                            <div class="row row-2"> <span id="card-inner">CVV</span> </div>
+                            <div class="row row-2"> @Html.EditorFor(model => model.paymentViewModel.cvc) </div>
+                            @Html.ValidationMessageFor(model => model.paymentViewModel.cvc, "", new { @class = "text-danger" })
+                        </div>
+
+                        @*<input type="submit" value="Add card" class="subscribe btn btn-primary btn-block" />*@
+                        <button class="btn d-flex mx-auto"><b>Add card</b></button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+            $(".selectedQuantity").change(function () {
+                var totalPriceOfProduct = $(this).parent().parent().parent().find(".cart_item_total").find(".cart_item_text");
+                var productPriceTxt = $(this).parent().parent().parent().find(".cart_item_price").find(".cart_item_text").html();
+                var selectQuantity = $(this).val();
+                var totalPrice = selectQuantity * parseInt(productPriceTxt)
+                totalPriceOfProduct.html(totalPrice.toFixed(2));
+
+                //
+                var totalPriceOfProductAfterDiscount = $(this).parent().parent().parent().find(".netPrice").find(".cart_item_text");
+                var productDisCount = $(this).parent().parent().parent().find(".cart_item_price").find(".itemDiscount").html();
+
+                totalPriceOfProductAfterDiscount.html((totalPrice - (totalPrice * (parseInt(productDisCount) / 100))).toFixed(2));
+
+
+                //get all product totals to compute total order
+                var sumTotals = 0;
+                $(".netPrice").each(function () {
+                    var totalTxt = $(this).find(".cart_item_text").text();
+                    sumTotals += parseFloat(totalTxt);
+                });
+
+                $(".order_total_amount").html(sumTotals);
+
+            })
+
+            ////delete from cart
+            $(".DeleteFromCart").click(function () {
+                $("#addtobagmodal .okBtn").data("product", $(this).attr("data-ProductID"));
+                  $("#addtobagmodal").modal("show");
+
+              })
+              $("#addtobagmodal").on("click", ".okBtn", function () {
+                  // alert("ok")
+
+                  var id = $(this).data("product");
+
+              $.ajax({
+                url: '@Url.Action("DeleteFromCart")',
+                type: 'Get',
+                datatype: 'html',
+                data: { productID: id },
+                  success: function (resoinse) {
+                      $("#addtobagmodal").modal("hide");
+                      location.reload(true);
+                }
+
+            });
+
+              });
+            ///////////////////////////////
+            $(".cart_button_checkout").click(function () {
+                $(".paymentInfoForm").removeClass("d-none")
+
+            });
+
+
+            $("#confirm").click(function () {
+              
+            var totalOrderPrice = parseFloat($(".order_total_amount").html());
+            var QuantitiesSelect = $(".selectedQuantity");
+            var quantities = [];
+            for (var i = 0; i < QuantitiesSelect.length; i++) {
+                quantities.push($(QuantitiesSelect[i]).val())
+            }
+            console.log(quantities);
+            console.log(totalOrderPrice);
+
+             $.ajax({
+                type: 'POST',
+                url: '@Url.Action("makeOrder","Order")',
+                data: { 'quantities': quantities, "totalOrderPrice": totalOrderPrice },
+                datatype: "json",
+                traditional: true,
+                 success: function () {
+                     alert("thanks for making order")
+                     location.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("jqXHR:" + jqXHR.status + " errorThrown: " + errorThrown);
+                }
+            })
+
+            });
+
+          });
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

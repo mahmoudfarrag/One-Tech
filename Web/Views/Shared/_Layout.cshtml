@@ -1,0 +1,299 @@
+﻿@using Microsoft.AspNet.Identity;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Single Product</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="OneTech shop project">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/Content/styles/fontawesome-all.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="~/Content/styles/bootstrap4/bootstrap.min.css">
+    <link href="~/Content/plugins/fontawesome-free-5.0.1/css/fontawesome-all.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="~/Content/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/plugins/OwlCarousel2-2.2.1/animate.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/plugins/slick-1.8.0/slick.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/styles/main_styles.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/styles/responsive.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    @*<link rel="stylesheet" type="text/css" href="~/Content/Site.css" />*@
+
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("styles", required: false)
+
+</head>
+
+<body style="font-family:Arial">
+
+    <div class="super_container">
+
+        <!-- Header -->
+
+        <header class="header">
+
+            <!-- Top Bar -->
+
+            <div class="top_bar" style="position:fixed;background-color:#D0e3f1;color:black">
+                <div class="container">
+                    <div class="row">
+                        <div class="col d-flex flex-row">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+        
+                                <div class="top_bar_contact_item"><div class="top_bar_icon"><img src="~/Content/images/mail.png" alt=""></div><a href="#">@User.Identity.Name</a></div>}
+
+                            <div class="top_bar_content ml-auto">
+                                <div class="top_bar_menu">
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <ul class="standard_dropdown top_bar_dropdown">
+                          
+                                            <li>  <div><a href="/Dashboard/index">Dashboard</a></div></li>
+                                        </ul>
+                                    }
+
+                                </div>
+                                <div class="top_bar_user">
+                                    @if (User.Identity.IsAuthenticated == false)
+                                    {
+                        <div class="user_icon"><img src="~/Content/images/user.svg" alt=""></div>
+                                        <div><a href="/Account/Register">Register</a></div>
+                                                        <div><a href="/Account/Login">Sign in</a></div> }
+                                                                    else
+                                                                    {
+
+                                                        <div><a href="/Account/Logout">Logout</a></div>
+                                                                        <div class="pl-3"><a href="/Account/Edit/@User.Identity.GetUserId()">Settings</a></div>}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Header Main -->
+
+            <div class="header_main">
+                <div class="container">
+                    <div class="row">
+
+                        <!-- Logo -->
+                        <div class="col-lg-2 col-sm-3 col-3 order-1">
+                            <div class="logo_container">
+                                <div class="logo"><a href="#">OneTech</a></div>
+                            </div>
+                        </div>
+
+                        <!-- Search -->
+                        <div class="col-lg-6 col-12 order-lg-2 order-3 text-lg-left text-right">
+                            <div class="header_search">
+                                <div class="header_search_content">
+                                    <div class="header_search_form_container">
+                                        <form action="/product/search" class="header_search_form clearfix">
+                                            <input name="productToSearch" id="productToSearch" type="search" required="required" class="header_search_input"
+                                                   placeholder="Search for products...">
+                                            <button type="submit" class="header_search_button trans_300" value="Submit">
+                                                <img src="~/Content/images/search.png" alt="">
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Wishlist -->
+                        <div class="col-lg-4 col-9 order-lg-3 order-2 text-lg-left text-right">
+                            <div class="wishlist_cart d-flex flex-row align-items-center justify-content-end">
+                                <div class="wishlist d-flex flex-row align-items-center justify-content-end">
+                                    <div class="wishlist_icon"><img src="~/Content/images/heart.png" alt=""></div>
+                                    <div class="wishlist_content">
+                                        <div class="wishlist_text"><a href="/wishlist/index">Wishlist</a></div>
+                                   
+                                    </div>
+                                </div>
+
+                                <!-- Cart -->
+                                <div class="cart">
+                                    <div class="cart_container d-flex flex-row align-items-center justify-content-end">
+                                        <div class="cart_icon">
+                                            <img src="~/Content/images/cart.png" alt="">
+                                            <div class="cart_count"><span>10</span></div>
+                                        </div>
+                                        <div class="cart_content">
+                                            <div class="cart_text"><a href="/cart/index">Cart</a></div>
+                                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </header>
+
+
+        @RenderBody();
+
+
+
+
+        <!-- Footer -->
+
+        <footer class="footer" style="background-color: white;color:black">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-3 footer_col">
+                        <div class="footer_column footer_contact">
+                            <div class="logo_container">
+                                <div class="logo"><a href="#">OneTech</a></div>
+                            </div>
+                            <div class="footer_title">Got Question? Call Us 24/7</div>
+                            <div class="footer_phone">+38 068 005 3570</div>
+                            <div class="footer_contact_text">
+                                <p>17 Princess Road, London</p>
+                                <p>Grester London NW18JR, UK</p>
+                            </div>
+                            <div class="footer_social">
+                                <ul>
+                                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-google"></i></a></li>
+                                    <li><a href="#"><i class="fab fa-vimeo-v"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 offset-lg-2">
+                        <div class="footer_column">
+                            <div class="footer_title">Find it Fast</div>
+                            <ul class="footer_list">
+                                <li><a href="#">Computers & Laptops</a></li>
+                                <li><a href="#">Cameras & Photos</a></li>
+                                <li><a href="#">Hardware</a></li>
+                                <li><a href="#">Smartphones & Tablets</a></li>
+                                <li><a href="#">TV & Audio</a></li>
+                            </ul>
+                            <div class="footer_subtitle">Gadgets</div>
+                            <ul class="footer_list">
+                                <li><a href="#">Car Electronics</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="footer_column">
+                            <ul class="footer_list footer_list_2">
+                                <li><a href="#">Video Games & Consoles</a></li>
+                                <li><a href="#">Accessories</a></li>
+                                <li><a href="#">Cameras & Photos</a></li>
+                                <li><a href="#">Hardware</a></li>
+                                <li><a href="#">Computers & Laptops</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="footer_column">
+                            <div class="footer_title">Customer Care</div>
+                            <ul class="footer_list">
+                                <li><a href="#">My Account</a></li>
+                                <li><a href="#">Order Tracking</a></li>
+                                <li><a href="#">Wish List</a></li>
+                                <li><a href="#">Customer Services</a></li>
+                                <li><a href="#">Returns / Exchange</a></li>
+                                <li><a href="#">FAQs</a></li>
+                                <li><a href="#">Product Support</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+
+        <!-- Copyright -->
+
+        <div class="copyright" style="background-color: #D0e3f1;color:black">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+
+                        <div class="copyright_container d-flex flex-sm-row flex-column align-items-center justify-content-start">
+                            <div class="copyright_content">
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                Copyright &copy;
+                                <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            </div>
+                            <div class="logos ml-sm-auto">
+                                <ul class="logos_list">
+                                    <li><a href="#"><img src="~/Content/images/logos_1.png" alt=""></a></li>
+                                    <li><a href="#"><img src="~/Content/images/logos_2.png" alt=""></a></li>
+                                    <li><a href="#"><img src="~/Content/images/logos_3.png" alt=""></a></li>
+                                    <li><a href="#"><img src="~/Content/images/logos_4.png" alt=""></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<script src="js/jquery-3.3.1.min.js"></script>*@
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+    @*<script src="styles/bootstrap4/popper.js"></script>*@
+    <script src="~/Scripts/js/popper.js"></script>
+
+    @*<script src="styles/bootstrap4/bootstrap.min.js"></script>*@
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+
+    @*<script src="plugins/greensock/TweenMax.min.js"></script>*@
+
+    <!--<script src="~/Scripts/js/TweenMax.min.js"></script>-->
+
+
+    @*<script src="plugins/greensock/TimelineMax.min.js"></script>*@
+    <!--<script src="~/Scripts/js/TimelineMax.min.js"></script>-->
+
+
+    @*<script src="plugins/scrollmagic/ScrollMagic.min.js"></script>*@
+    <!--<script src="~/Scripts/js/ScrollMagic.min.js"></script>-->
+
+
+    @*<script src="plugins/greensock/animation.gsap.min.js"></script>*@
+    <!--<script src="~/Scripts/js/animation.gsap.min.js"></script>-->
+
+    @*<script src="plugins/greensock/ScrollToPlugin.min.js"></script>*@
+    <!--<script src="~/Scripts/js/ScrollToPlugin.min.js"></script>-->
+
+
+    @*<script src="plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>*@
+    <!--<script src="~/Scripts/js/owl.carousel.js"></script>-->
+
+
+    @*<script src="plugins/easing/easing.js"></script>*@
+    <!--<script src="~/Scripts/js/easing.js"></script>-->
+
+    @*<script src="js/product_custom.js"></script>*@
+ 
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

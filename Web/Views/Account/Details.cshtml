@@ -1,0 +1,67 @@
+﻿@model BL.ViewModels.RegisterViewodel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_DashoardLayout.cshtml";
+}
+@section styles{
+     <style>
+         table, td {
+             border :1px solid black;
+             border-collapse: collapse;
+             text-align: center;
+             padding :10px;
+             box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+         }
+         th {
+             text-align :left;
+             box-shadow :rgba(0, 0, 0, 0.24) 0px 3px 8px;
+         }
+         h2{
+             margin-top:60px;
+             text-align:center;
+         }
+     </style>
+    }
+<h2>Details</h2>
+<table class="table table-bordered table-striped" >
+    <tr>
+        <th>Frist Name</th>
+        <td>@Model.FirstName</td>
+    </tr>
+
+    <tr>
+        <th>Last Name</th>
+        <td>@Model.LastName</td>
+    </tr>
+
+    <tr>
+        <th>Address</th>
+        <td>@Model.Address</td>
+    </tr>
+
+    <tr>
+        <th>Country</th>
+        <td>@Model.Country</td>
+    </tr>
+
+    <tr>
+        <th>Email</th>
+        <td>@Model.Email</td>
+    </tr>
+
+    <tr>
+        <th>User Name </th>
+        <td>@Model.UserName</td>
+    </tr>
+    <tr>
+        <th>Birthdate</th>
+        <td>@Model.BirthDate</td>
+    </tr>
+
+</table>
+
+<p style="margin-top50px">
+
+    @Html.ActionLink("Back to List", "Index",null,new { @class="btn btn-primary"})
+</p>

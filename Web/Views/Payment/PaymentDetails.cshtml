@@ -1,0 +1,57 @@
+﻿@model BL.ViewModels.PaymentViewModel
+@{
+    ViewBag.Title = "PaymentDetails";
+}
+
+<h2>PaymentDetails</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CardNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CardNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExperationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExperationDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cardOwnerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cardOwnerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.cvc)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.cvc)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Update", "UpdatePayment", new { ID = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
